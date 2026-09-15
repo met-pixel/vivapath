@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VivaPath — Your hospital admission explained in plain language">
+<title>VivaPath — Your Admission</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#F8F5F0;--bg2:#EEEAE2;--bg3:#E2D9CC;--bg4:#D0C8B8;
+  --white:#FFFFFF;--ink:#1A1612;--ink2:#3D362C;--ink3:#8A7D6E;
+  --teal:#0A8A7E;--teal2:#076B61;--teal3:#054F49;
+  --teal-bg:#E4F2F0;--teal-br:#A8D8D4;
+  --amber:#C97200;--amb-bg:#FDF3E3;--amb-br:#EDD99A;
+  --rose:#C22B46;--rose-bg:#FDEDF0;--rose-br:#F5C0CB;
+  --sage:#4E7856;--sage-bg:#E5EFE6;--sage-br:#B0D4B4;
+  --blue:#2563EB;--blue-bg:#EFF6FF;--blue-br:#BFDBFE;
+  --r:16px;--rsm:10px;
+  --sh:0 2px 12px rgba(26,22,18,.07),0 1px 3px rgba(26,22,18,.04);
+  --shmd:0 8px 32px rgba(26,22,18,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);color:var(--ink);
+  font-size:15px;line-height:1.6;
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+
+/* NAV */
+.nav{
+  background:var(--white);border-bottom:1.5px solid var(--bg3);
+  height:60px;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:300;box-shadow:var(--sh);
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-size:14px;font-weight:600;color:#fff;
+}
+.logo-text{font-family:'Fraunces',serif;font-size:20px;font-weight:500;color:var(--ink)}
+.logo-text em{color:var(--teal);font-style:normal}
+.share-btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--teal);color:#fff;border:none;
+  border-radius:10px;padding:9px 18px;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;
+  cursor:pointer;transition:.18s;letter-spacing:.01em;
+}
+.share-btn:hover{background:var(--teal2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(10,138,126,.3)}
+
+/* PATIENT SWITCHER */
+.patient-bar{
+  background:var(--white);border-bottom:1.5px solid var(--bg3);
+  padding:0 24px;display:flex;align-items:center;gap:4px;
+}
+.patient-tab{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 16px;cursor:pointer;
+  border-bottom:2.5px solid transparent;
+  transition:.18s;margin-bottom:-1.5px;user-select:none;
+  border-radius:8px 8px 0 0;
+}
+.patient-tab:hover{background:var(--bg)}
+.patient-tab.active{border-bottom-color:var(--teal);background:var(--teal-bg)}
+.pt-av{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.pt-name{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--ink)}
+.pt-tag{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--ink3);margin-top:1px}
+.pt-sep{width:1px;height:36px;background:var(--bg3);margin:0 6px}
+
+/* SECTION TABS */
+.section-tabs{
+  background:var(--white);border-bottom:1.5px solid var(--bg3);
+  padding:0 24px;display:flex;gap:2px;
+  position:sticky;top:60px;z-index:200;
+  box-shadow:0 2px 8px rgba(26,22,18,.05);overflow-x:auto;
+}
+.stab{
+  padding:14px 18px;border:none;background:transparent;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;
+  color:var(--ink3);cursor:pointer;
+  border-bottom:2.5px solid transparent;margin-bottom:-1.5px;
+  transition:.15s;display:flex;align-items:center;gap:6px;
+  white-space:nowrap;letter-spacing:.01em;
+}
+.stab:hover{color:var(--ink)}
+.stab.active{color:var(--teal);border-bottom-color:var(--teal);font-weight:600}
+.tab-content{display:none;animation:fadeIn .22s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGE */
+.page{max-width:660px;margin:0 auto;padding:28px 20px 100px}
+
+/* HERO */
+.hero{
+  background:var(--white);border:1.5px solid var(--bg3);
+  border-radius:var(--r);overflow:hidden;margin-bottom:24px;
+  box-shadow:var(--sh);
+}
+.hero-band{padding:28px 26px 22px;color:#fff}
+.hero-band.cardiac{background:linear-gradient(135deg,#0A8A7E 0%,#054F49 100%)}
+.hero-band.ortho{background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%)}
+.hero-greeting{
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  opacity:.75;margin-bottom:6px;letter-spacing:.02em;text-transform:uppercase;
+}
+.hero-title{
+  font-family:'Fraunces',serif;font-size:26px;font-weight:400;
+  line-height:1.2;margin-bottom:22px;
+}
+.hero-stats{display:flex;border-top:1px solid rgba(255,255,255,.18);padding-top:18px;gap:0}
+.hstat{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.15)}
+.hstat:last-child{border-right:none}
+.hstat-val{font-family:'Fraunces',serif;font-size:26px;font-weight:500;line-height:1}
+.hstat-lbl{font-family:'DM Sans',sans-serif;font-size:11px;opacity:.7;margin-top:4px;letter-spacing:.02em}
+.hero-body{padding:20px 26px}
+.diag-block{
+  display:flex;align-items:flex-start;gap:14px;
+  background:var(--bg);border-radius:12px;padding:16px 18px;margin-bottom:16px;
+}
+.diag-icon{font-size:26px;flex-shrink:0;margin-top:2px}
+.diag-lbl{
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);margin-bottom:4px;
+}
+.diag-title{
+  font-family:'Fraunces',serif;font-size:19px;font-weight:400;margin-bottom:5px;
+}
+.diag-plain{font-family:'DM Sans',sans-serif;font-size:14.5px;color:var(--ink2);line-height:1.65}
+.hero-meta{display:flex;gap:16px;flex-wrap:wrap}
+.hm{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink3);display:flex;align-items:center;gap:5px}
+
+/* SECTION LABEL */
+.sec-lbl{
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);
+  margin-bottom:14px;display:flex;align-items:center;gap:10px;
+}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--bg3)}
+
+/* DAY CARDS */
+.day-card{
+  background:var(--white);border:1.5px solid var(--bg3);
+  border-radius:12px;margin-bottom:10px;
+  box-shadow:var(--sh);overflow:hidden;transition:border-color .18s,box-shadow .18s;
+}
+.day-card:hover{border-color:var(--teal-br);box-shadow:var(--shmd)}
+.day-card.open{border-color:var(--teal)}
+.day-trigger{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;cursor:pointer;user-select:none;
+}
+.day-badge{
+  width:44px;height:44px;border-radius:50%;background:var(--bg2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;
+}
+.day-badge.hi{background:var(--teal-bg)}
+.day-badge.hi-blue{background:var(--blue-bg)}
+.db-num{font-family:'Fraunces',serif;font-size:17px;font-weight:500;line-height:1;color:var(--ink)}
+.day-badge.hi .db-num{color:var(--teal)}
+.day-badge.hi-blue .db-num{color:var(--blue)}
+.db-lbl{font-family:'DM Sans',sans-serif;font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em}
+.day-info{flex:1}
+.day-main{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--ink)}
+.day-sub{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:2px}
+.day-chip{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;border-radius:7px;padding:3px 10px;flex-shrink:0}
+.day-chev{color:var(--ink3);font-size:12px;flex-shrink:0;transition:transform .22s}
+.day-card.open .day-chev{transform:rotate(90deg);color:var(--teal)}
+.day-body{
+  display:none;padding:0 18px 16px;
+  border-top:1px solid var(--bg2);animation:fadeIn .18s ease;
+}
+.day-card.open .day-body{display:block}
+
+/* EVENTS */
+.ev{display:flex;align-items:flex-start;gap:13px;padding:13px 0;border-bottom:1px solid var(--bg2)}
+.ev:last-child{border-bottom:none}
+.ev-ico{
+  width:32px;height:32px;border-radius:9px;background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;margin-top:1px;
+}
+.ev-title{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;margin-bottom:4px;color:var(--ink)}
+.ev-body{font-family:'DM Sans',sans-serif;font-size:14.5px;color:var(--ink2);line-height:1.65}
+.why-box{
+  display:flex;gap:9px;align-items:flex-start;
+  background:var(--teal-bg);border-left:3px solid var(--teal);
+  border-radius:0 8px 8px 0;padding:10px 13px;margin-top:10px;
+  font-family:'DM Sans',sans-serif;font-size:14px;color:var(--teal2);line-height:1.6;
+}
+.why-box.blue{background:var(--blue-bg);border-left-color:var(--blue);color:#1E40AF}
+.num-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.nchip{
+  background:var(--white);border:1px solid var(--bg3);border-radius:8px;
+  padding:5px 11px;font-family:'DM Sans',sans-serif;font-size:13px;
+  display:flex;align-items:center;gap:6px;
+}
+.nc-lbl{color:var(--ink3);font-weight:500}
+.nc-val{font-family:'DM Mono',monospace;font-weight:500}
+.nc-val.hi{color:var(--amber)}.nc-val.cr{color:var(--rose)}.nc-val.ok{color:var(--sage)}.nc-val.bl{color:var(--blue)}
+
+/* MEDS */
+.meds-grid{display:flex;flex-direction:column;gap:9px}
+.med-item{
+  background:var(--white);border:1.5px solid var(--bg3);
+  border-radius:12px;box-shadow:var(--sh);overflow:hidden;
+  transition:border-color .15s,box-shadow .15s;
+}
+.med-item:hover{border-color:var(--teal-br);box-shadow:var(--shmd)}
+.med-item.open{border-color:var(--teal)}
+.med-trigger{display:flex;align-items:center;gap:13px;padding:15px 18px;cursor:pointer;user-select:none}
+.med-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.med-name{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--ink)}
+.med-dose{font-family:'DM Sans',sans-serif;font-size:12.5px;color:var(--ink3);margin-top:2px}
+.med-chev{color:var(--ink3);font-size:12px;flex-shrink:0;transition:transform .2s}
+.med-item.open .med-chev{transform:rotate(180deg);color:var(--teal)}
+.badge-crit{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;background:var(--rose-bg);color:var(--rose);border:1px solid var(--rose-br);border-radius:5px;padding:2px 7px}
+.badge-new{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-br);border-radius:5px;padding:2px 7px}
+.badge-up{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;background:var(--amb-bg);color:var(--amber);border:1px solid var(--amb-br);border-radius:5px;padding:2px 7px}
+.med-detail{display:none;padding:0 18px 16px;border-top:1px solid var(--bg2);animation:fadeIn .18s ease}
+.med-item.open .med-detail{display:block}
+.med-why{font-family:'DM Sans',sans-serif;font-size:14.5px;color:var(--ink2);line-height:1.65;margin-bottom:10px;padding-top:12px}
+.med-warn{background:var(--rose-bg);border:1px solid var(--rose-br);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--rose);display:flex;gap:7px;align-items:flex-start;line-height:1.55}
+.med-tip{background:var(--sage-bg);border:1px solid var(--sage-br);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--sage);display:flex;gap:7px;align-items:flex-start;line-height:1.55;margin-top:8px}
+.med-ask{background:var(--teal-bg);border:1px solid var(--teal-br);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--teal2);cursor:pointer;display:flex;align-items:center;gap:7px;margin-top:8px;transition:.15s}
+.med-ask:hover{background:var(--teal);color:#fff}
+
+/* NEXT STEPS */
+.next-card{background:var(--white);border:1.5px solid var(--bg3);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.next-row{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--bg2)}
+.next-row:last-child{border-bottom:none}
+.next-num{width:30px;height:30px;border-radius:50%;background:var(--teal-bg);display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--teal);flex-shrink:0;margin-top:1px}
+.next-num.warn{background:var(--amb-bg);color:var(--amber)}
+.next-num.urg{background:var(--rose-bg);color:var(--rose)}
+.next-num.blue{background:var(--blue-bg);color:var(--blue)}
+.next-title{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;margin-bottom:3px;color:var(--ink)}
+.next-body{font-family:'DM Sans',sans-serif;font-size:14.5px;color:var(--ink2);line-height:1.6}
+.next-date{font-family:'DM Sans',sans-serif;font-size:12.5px;color:var(--ink3);margin-top:5px;display:flex;align-items:center;gap:4px}
+
+/* WARNINGS */
+.watch-card{background:var(--amb-bg);border:1.5px solid var(--amb-br);border-radius:12px;padding:16px 18px;margin-bottom:10px}
+.watch-title{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:var(--amber);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.watch-list{display:flex;flex-direction:column;gap:8px}
+.watch-item{font-family:'DM Sans',sans-serif;font-size:14.5px;color:#7A4F00;display:flex;gap:9px;line-height:1.55}
+.watch-item::before{content:'—';color:var(--amber);font-weight:700;flex-shrink:0}
+.sos-card{background:var(--rose-bg);border:1.5px solid var(--rose-br);border-radius:12px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+.sos-ico{font-size:28px;flex-shrink:0}
+.sos-title{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;color:var(--rose);margin-bottom:4px}
+.sos-body{font-family:'DM Sans',sans-serif;font-size:14.5px;color:#7A1828;line-height:1.6}
+
+/* COMPANION */
+.companion-section{background:var(--white);border:1.5px solid var(--bg3);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.companion-header{padding:16px 20px;border-bottom:1.5px solid var(--bg2);display:flex;align-items:center;gap:13px}
+.comp-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;position:relative}
+.comp-status{position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:var(--sage);border:2px solid var(--white)}
+.comp-status.listening{background:var(--rose);animation:pulseDot 1s infinite}
+.comp-status.speaking{background:var(--amber);animation:pulseDot .7s infinite}
+@keyframes pulseDot{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+.comp-name{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--ink)}
+.comp-tag{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-br);border-radius:5px;padding:2px 7px;margin-left:4px;letter-spacing:.02em}
+.comp-disc{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:2px}
+.voice-status{margin-left:auto;font-family:'DM Sans',sans-serif;font-size:12.5px;color:var(--ink3);display:flex;align-items:center;gap:6px}
+.voice-status .dot{width:7px;height:7px;border-radius:50%;background:var(--bg3)}
+.voice-status.listening .dot{background:var(--rose);animation:pulseDot 1s infinite}
+.voice-status.speaking .dot{background:var(--amber);animation:pulseDot .7s infinite}
+.chat-area{padding:16px 20px;display:flex;flex-direction:column;gap:13px;max-height:320px;overflow-y:auto;scroll-behavior:smooth}
+.msg{max-width:88%}
+.msg.comp{align-self:flex-start}.msg.user{align-self:flex-end}
+.msg-bubble{padding:12px 16px;border-radius:16px;font-family:'DM Sans',sans-serif;font-size:14.5px;line-height:1.65}
+.msg.comp .msg-bubble{background:var(--bg2);color:var(--ink2);border-radius:4px 16px 16px 16px}
+.msg.user .msg-bubble{background:var(--teal);color:#fff;border-radius:16px 4px 16px 16px}
+.msg-t{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--ink3);margin-top:4px;padding:0 4px}
+.msg.user .msg-t{text-align:right}
+.msg-ai{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--teal);padding:0 4px;margin-top:2px}
+.typing-ind{display:flex;gap:4px;padding:12px 16px;background:var(--bg2);border-radius:4px 16px 16px 16px;width:fit-content}
+.td{width:6px;height:6px;background:var(--ink3);border-radius:50%;animation:tdB 1.1s infinite}
+.td:nth-child(2){animation-delay:.18s}.td:nth-child(3){animation-delay:.36s}
+@keyframes tdB{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.quick-q-row{display:flex;flex-wrap:wrap;gap:6px;padding:10px 20px 12px}
+.qq{
+  background:var(--bg2);border:1.5px solid var(--bg3);border-radius:20px;
+  padding:6px 13px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  cursor:pointer;color:var(--ink2);transition:.15s;
+}
+.qq:hover{border-color:var(--teal);background:var(--teal-bg);color:var(--teal)}
+.input-row{display:flex;gap:8px;padding:12px 18px;border-top:1.5px solid var(--bg2);align-items:center}
+.chat-inp{
+  flex:1;background:var(--bg2);border:1.5px solid var(--bg3);border-radius:24px;
+  padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:14.5px;color:var(--ink);
+  outline:none;transition:.15s;
+}
+.chat-inp:focus{border-color:var(--teal);background:var(--white)}
+.send-btn{
+  background:var(--teal);color:#fff;border:none;border-radius:24px;
+  padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:500;
+  cursor:pointer;transition:.18s;flex-shrink:0;
+}
+.send-btn:hover{background:var(--teal2)}
+.send-btn:disabled{background:var(--bg3);color:var(--ink3);cursor:not-allowed}
+.mic-btn{
+  width:42px;height:42px;border-radius:50%;background:var(--bg2);
+  border:1.5px solid var(--bg3);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:.18s;flex-shrink:0;font-size:18px;
+}
+.mic-btn:hover{background:var(--teal-bg);border-color:var(--teal)}
+.mic-btn.active{background:var(--rose-bg);border-color:var(--rose);animation:micPulse 1s infinite}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(194,43,70,.3)}50%{box-shadow:0 0 0 10px rgba(194,43,70,0)}}
+.speaker-btn{width:38px;height:38px;border-radius:50%;background:transparent;border:1.5px solid var(--bg3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s;font-size:16px;flex-shrink:0}
+.speaker-btn:hover{border-color:var(--teal);background:var(--teal-bg)}
+.speaker-btn.active{background:var(--teal-bg);border-color:var(--teal);color:var(--teal)}
+
+/* TRACKING */
+.score-btn{transition:.15s}
+.score-btn:hover{transform:scale(1.1)}
+.wound-btn{transition:.15s}
+
+/* SHARE MODAL */
+.overlay{position:fixed;inset:0;background:rgba(26,22,18,.5);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.show{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:20px;padding:28px;max-width:420px;width:90%;box-shadow:0 24px 64px rgba(26,22,18,.18);transform:scale(.95) translateY(10px);transition:transform .25s}
+.overlay.show .modal{transform:scale(1) translateY(0)}
+.modal h3{font-family:'Fraunces',serif;font-size:20px;font-weight:400;margin-bottom:7px;color:var(--ink)}
+.modal-sub{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink3);margin-bottom:16px;line-height:1.55}
+.share-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.sopt{display:flex;align-items:center;gap:12px;background:var(--bg);border:1.5px solid var(--bg3);border-radius:12px;padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:500;cursor:pointer;transition:.15s;color:var(--ink)}
+.sopt:hover{border-color:var(--teal);background:var(--teal-bg);color:var(--teal)}
+.sopt-ico{font-size:20px}
+.btn-ghost{width:100%;background:transparent;border:1.5px solid var(--bg3);border-radius:12px;padding:11px;font-family:'DM Sans',sans-serif;font-size:14.5px;font-weight:500;color:var(--ink3);cursor:pointer;transition:.15s}
+.btn-ghost:hover{border-color:var(--ink3);color:var(--ink)}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:3px}
+
+</style>
+</head>
+<body>
+
+<!-- SHARE MODAL -->
+<div class="overlay" id="shareModal">
+  <div class="modal">
+    <h3>Share your summary</h3>
+    <p class="modal-sub">Send to your doctor before your next appointment, or save a copy for yourself.</p>
+    <div class="share-opts">
+      <div class="sopt" onclick="alert('Sent to doctor');cModal()"><span class="sopt-ico">🩺</span>Send to my doctor</div>
+      <div class="sopt" onclick="alert('Downloaded');cModal()"><span class="sopt-ico">📄</span>Download as PDF</div>
+      <div class="sopt" onclick="alert('WhatsApp');cModal()"><span class="sopt-ico">💬</span>Send via WhatsApp</div>
+    </div>
+    <button class="btn-ghost" onclick="cModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-mark">VP</div>
+    <div class="logo-text">Viva<em>Path</em></div>
+  </div>
+  <button class="share-btn" onclick="oModal()">📤 Share</button>
+</nav>
+
+<!-- PATIENT SWITCHER -->
+<div class="patient-bar">
+  <div class="patient-tab active" id="ptab-0" onclick="switchPatient(0)">
+    <div class="pt-av" style="background:linear-gradient(135deg,#F4A55A,#E07D2A)">JM</div>
+    <div><div class="pt-name">João Martins</div><div class="pt-tag">Cardiac · 62y</div></div>
+  </div>
+  <div class="pt-sep"></div>
+  <div class="patient-tab" id="ptab-1" onclick="switchPatient(1)">
+    <div class="pt-av" style="background:linear-gradient(135deg,#818CF8,#4F46E5)">AS</div>
+    <div><div class="pt-name">Ana Silva</div><div class="pt-tag">Orthopaedics · 68y</div></div>
+  </div>
+</div>
+
+<!-- SECTION TABS -->
+<div class="section-tabs">
+  <button class="stab active" id="st-journey" onclick="switchTab('journey')">📅 My journey</button>
+  <button class="stab" id="st-meds" onclick="switchTab('meds')">💊 Medicines</button>
+  <button class="stab" id="st-next" onclick="switchTab('next')">📋 What's next</button>
+  <button class="stab" id="st-warnings" onclick="switchTab('warnings')">⚠️ Warning signs</button>
+  <button class="stab" id="st-companion" onclick="switchTab('companion')">✨ Companion</button>
+  <button class="stab" id="st-tracking" onclick="switchTab('tracking')">📊 Recuperação</button>
+</div>
+
+<div id="patient-0">
+
+  <!-- JOURNEY -->
+  <div class="tab-content active" id="tc-journey-0">
+    <div class="page">
+      <div class="hero">
+        <div class="hero-band cardiac">
+          <div class="hero-greeting">Welcome back, João</div>
+          <div class="hero-title">Here is what happened<br><em style="font-style:italic;opacity:.85">during your hospital stay</em></div>
+          <div class="hero-stats">
+            <div class="hstat"><div class="hstat-val">5</div><div class="hstat-lbl">Days admitted</div></div>
+            <div class="hstat"><div class="hstat-val">1</div><div class="hstat-lbl">Procedure done</div></div>
+            <div class="hstat"><div class="hstat-val">5</div><div class="hstat-lbl">New medicines</div></div>
+            <div class="hstat"><div class="hstat-val">3</div><div class="hstat-lbl">Follow-ups needed</div></div>
+          </div>
+        </div>
+        <div class="hero-body">
+          <div class="diag-block">
+            <div class="diag-icon">❤️</div>
+            <div>
+              <div class="diag-lbl">Your diagnosis</div>
+              <div class="diag-title">Heart attack (NSTEMI)</div>
+              <div class="diag-plain">A fatty deposit in one of your heart's arteries cracked open and blocked blood flow. Doctors placed a small metal tube called a <strong>stent</strong> to hold the artery open. The procedure was successful.</div>
+            </div>
+          </div>
+          <div class="hero-meta">
+            <div class="hm">🏥 Hospital · 14–18 Nov 2024</div>
+            <div class="hm">👨‍⚕️ Dr. Filipe Costa · Cardiology</div>
+            <div class="hm">✓ Discharged 18 Nov</div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-lbl">📅 What happened each day</div>
+      <!-- DAY 1 -->
+      <div class="day-card open" id="d0-1"><div class="day-trigger" onclick="tD('d0-1')"><div class="day-badge hi"><div class="db-num">1</div><div class="db-lbl">Day</div></div><div class="day-info"><div class="day-main">You arrived — emergency tests</div><div class="day-sub">Thursday 14 November</div></div><div class="day-chip" style="background:var(--rose-bg);color:var(--rose)">🚨 Emergency</div><div class="day-chev">▸</div></div><div class="day-body"><div class="ev"><div class="ev-ico">🩸</div><div><div class="ev-title">Urgent blood test — troponin</div><div class="ev-body">Doctors checked a protein called <strong>troponin</strong> — released when the heart muscle is under stress. Your level was very high, confirming a heart attack.<div class="num-row"><div class="nchip"><span class="nc-lbl">Troponin I</span><span class="nc-val cr">4.2 ng/mL ↑↑</span></div><div class="nchip"><span class="nc-lbl">Normal</span><span class="nc-val">below 0.04</span></div></div></div></div></div><div class="ev"><div class="ev-ico">🔩</div><div><div class="ev-title">Stent placed in your heart artery</div><div class="ev-body">Doctors threaded a thin tube through your wrist artery to reach your heart, found a severe blockage in the main artery at the front, and placed a small metal mesh tube — the stent — to hold it open permanently. The procedure worked.<div class="why-box"><span>💡</span><span>The stent is now permanent. Your blood thinners — aspirin and clopidogrel — stop clots forming inside it while your artery heals. This is why those two medicines cannot be skipped.</span></div></div></div></div></div></div>
+      <!-- DAY 2 -->
+      <div class="day-card" id="d0-2"><div class="day-trigger" onclick="tD('d0-2')"><div class="day-badge"><div class="db-num">2</div><div class="db-lbl">Day</div></div><div class="day-info"><div class="day-main">Rest and monitoring overnight</div><div class="day-sub">Friday 15 November · Stable</div></div><div class="day-chip" style="background:var(--teal-bg);color:var(--teal)">Stable</div><div class="day-chev">▸</div></div><div class="day-body"><div class="ev"><div class="ev-ico">📊</div><div><div class="ev-title">Heart monitoring overnight</div><div class="ev-body">Your heart was watched on a monitor all night. Your rhythm stayed regular, no complications were found. Your troponin level was already falling — a sign the procedure worked.</div></div></div><div class="ev"><div class="ev-ico">💊</div><div><div class="ev-title">Five new medicines started</div><div class="ev-body">All five medicines you were prescribed began today. Each one has a specific job in your recovery. Full explanations are in the <strong>Medicines</strong> tab above.</div></div></div></div></div>
+      <!-- DAY 3 -->
+      <div class="day-card" id="d0-3"><div class="day-trigger" onclick="tD('d0-3')"><div class="day-badge"><div class="db-num">3</div><div class="db-lbl">Day</div></div><div class="day-info"><div class="day-main">Heart scan — how well is it pumping?</div><div class="day-sub">Saturday 16 November</div></div><div class="day-chip" style="background:var(--amb-bg);color:var(--amber)">Result</div><div class="day-chev">▸</div></div><div class="day-body"><div class="ev"><div class="ev-ico">🫀</div><div><div class="ev-title">Ultrasound scan (echo)</div><div class="ev-body">A painless sound-wave scan that pictures your heart — like a pregnancy scan but for your heart. It measures how well your heart pumps blood with each beat.<div class="num-row"><div class="nchip"><span class="nc-lbl">Heart pumping</span><span class="nc-val hi">48%</span></div><div class="nchip"><span class="nc-lbl">Normal range</span><span class="nc-val">55–70%</span></div></div><div class="why-box"><span>💡</span><span>48% means your heart is pumping a little less than usual — very common after a heart attack. It almost always improves over the next few months with your medicines and rehabilitation.</span></div></div></div></div></div></div>
+      <!-- DAY 4 -->
+      <div class="day-card" id="d0-4"><div class="day-trigger" onclick="tD('d0-4')"><div class="day-badge"><div class="db-num">4</div><div class="db-lbl">Day</div></div><div class="day-info"><div class="day-main">First steps — preparing to go home</div><div class="day-sub">Sunday 17 November</div></div><div class="day-chip" style="background:var(--sage-bg);color:var(--sage)">Progress</div><div class="day-chev">▸</div></div><div class="day-body"><div class="ev"><div class="ev-ico">🚶</div><div><div class="ev-title">First walk on the ward</div><div class="ev-body">You were helped to walk short distances. Gentle movement helps your heart muscle begin rebuilding strength safely, even this early in recovery.</div></div></div><div class="ev"><div class="ev-ico">📝</div><div><div class="ev-title">Discharge planning</div><div class="ev-body">Dr. Costa's team explained your medicines, your December follow-up appointment, and the cardiac rehabilitation programme they are referring you to.</div></div></div></div></div>
+      <!-- DAY 5 -->
+      <div class="day-card" id="d0-5"><div class="day-trigger" onclick="tD('d0-5')"><div class="day-badge hi"><div class="db-num">5</div><div class="db-lbl">Day</div></div><div class="day-info"><div class="day-main">Discharged — home to recover</div><div class="day-sub">Monday 18 November</div></div><div class="day-chip" style="background:var(--teal-bg);color:var(--teal)">✓ Home</div><div class="day-chev">▸</div></div><div class="day-body"><div class="ev"><div class="ev-ico">📝</div><div><div class="ev-title">Final blood tests</div><div class="ev-body">Your troponin had fallen back toward normal — confirming the procedure was successful.<div class="num-row"><div class="nchip"><span class="nc-lbl">Troponin</span><span class="nc-val ok">0.8 ↓ Improving</span></div><div class="nchip"><span class="nc-lbl">Cholesterol</span><span class="nc-val hi">112 mg/dL</span></div></div></div></div></div><div class="ev"><div class="ev-ico">🏠</div><div><div class="ev-title">You went home</div><div class="ev-body">You left with five medicines, a follow-up appointment in December, and a referral to cardiac rehabilitation. Your recovery continues at home over the next 3–6 months.<div class="why-box"><span>💡</span><span>The most important things now: take your medicines every day and attend all follow-up appointments.</span></div></div></div></div></div></div>
+    </div>
+  </div>
+
+  <!-- MEDS -->
+  <div class="tab-content" id="tc-meds-0">
+    <div class="page">
+      <div class="sec-lbl" style="margin-top:0">💊 Your medicines — tap any to learn more</div>
+      <div class="meds-grid">
+        <!-- Aspirin -->
+        <div class="med-item open" id="m0-1"><div class="med-trigger" onclick="tM('m0-1')"><div class="med-ico" style="background:#FDEDF0">💊</div><div class="med-name-row"><div class="med-name">Aspirin 100mg <span class="badge-crit">🔴 Critical</span> <span class="badge-new">New</span></div><div class="med-dose">Every morning · With food · Lifelong</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">Stops blood clots forming inside your stent. You will take this for the rest of your life.</div><div class="med-warn"><span>⚠️</span><span>Never stop without speaking to Dr. Costa first — even for a few days.</span></div><div class="med-ask" onclick="askComp('Why is aspirin so important after a stent?')"><span>✨</span>Ask Companion about aspirin →</div></div></div>
+        <!-- Clopidogrel -->
+        <div class="med-item" id="m0-2"><div class="med-trigger" onclick="tM('m0-2')"><div class="med-ico" style="background:#FDEDF0">💊</div><div class="med-name-row"><div class="med-name">Clopidogrel 75mg <span class="badge-crit">🔴 Critical</span> <span class="badge-new">New</span></div><div class="med-dose">Every evening · At least 12 months</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">Works together with aspirin to keep your stent open. These two medicines block clotting in different ways — using both is much safer than either alone.</div><div class="med-warn"><span>⚠️</span><span>Stopping suddenly could cause the stent to block. Always call your doctor before stopping.</span></div><div class="med-ask" onclick="askComp('Why do I need two blood thinners after my stent?')"><span>✨</span>Ask Companion about clopidogrel →</div></div></div>
+        <!-- Bisoprolol -->
+        <div class="med-item" id="m0-3"><div class="med-trigger" onclick="tM('m0-3')"><div class="med-ico" style="background:#DBEAFE">💙</div><div class="med-name-row"><div class="med-name">Bisoprolol 5mg <span class="badge-new">New</span></div><div class="med-dose">Every morning · Heart rate and blood pressure</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">Slows your heart rate so it does not have to work as hard while it recovers. You may feel slightly more tired at first — this is normal and improves after a few weeks.</div><div class="med-tip"><span>✓</span><span>Take at the same time every morning, ideally with breakfast.</span></div><div class="med-ask" onclick="askComp('What does bisoprolol do and why do I need it?')"><span>✨</span>Ask Companion about bisoprolol →</div></div></div>
+        <!-- Rosuvastatin -->
+        <div class="med-item" id="m0-4"><div class="med-trigger" onclick="tM('m0-4')"><div class="med-ico" style="background:#E6F5F3">💚</div><div class="med-name-row"><div class="med-name">Rosuvastatin 20mg <span class="badge-up">↑ Dose increased</span></div><div class="med-dose">Every evening · Cholesterol</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">Lowers your bad cholesterol. Your level was 112 when you arrived — your target after a heart attack is below 70. The dose was doubled because the target is now stricter.</div><div class="med-tip"><span>✓</span><span>Dr. Costa will check whether it is working at your December appointment.</span></div><div class="med-ask" onclick="askComp('My cholesterol was 112 — what is a statin and why was my dose increased?')"><span>✨</span>Ask Companion about rosuvastatin →</div></div></div>
+        <!-- Ramipril -->
+        <div class="med-item" id="m0-5"><div class="med-trigger" onclick="tM('m0-5')"><div class="med-ico" style="background:#F3E8FF">💜</div><div class="med-name-row"><div class="med-name">Ramipril 5mg <span class="badge-new">New</span></div><div class="med-dose">Every morning · Blood pressure and heart protection</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">Reduces the strain on your heart and protects your kidneys. Proven to help the heart muscle recover more effectively in the months after a heart attack.</div><div class="med-ask" onclick="askComp('What does ramipril do for my heart?')"><span>✨</span>Ask Companion about ramipril →</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEXT -->
+  <div class="tab-content" id="tc-next-0">
+    <div class="page">
+      <div class="sec-lbl" style="margin-top:0">📋 What to do after going home</div>
+      <div class="next-card">
+        <div class="next-row"><div class="next-num urg">!</div><div><div class="next-title">Take your medicines every day</div><div class="next-body">Especially aspirin and clopidogrel. Set a daily phone reminder. Missing doses — even occasionally — increases the risk of your stent blocking. If you miss a dose, do not double up — just take the next one on time.</div></div></div>
+        <div class="next-row"><div class="next-num">1</div><div><div class="next-title">Follow-up with Dr. Filipe Costa</div><div class="next-body">Your one-month cardiology check-up. Dr. Costa will check how your heart is recovering, review your medicines, and check your cholesterol.</div><div class="next-date">📅 12 December 2024 · Cardiology outpatient</div></div></div>
+        <div class="next-row"><div class="next-num">2</div><div><div class="next-title">Cardiac rehabilitation programme</div><div class="next-body">18 supervised exercise sessions. Reduces your risk of another heart attack by up to 25%. Safe and specifically designed for people recovering from a heart attack like yours.</div><div class="next-date">📅 Referral sent · First session within 2 weeks</div></div></div>
+        <div class="next-row"><div class="next-num warn">3</div><div><div class="next-title">Cholesterol blood test</div><div class="next-body">Your cholesterol was 112 on arrival. Your new target is below 70. A repeat test will show whether the increased dose is working.</div><div class="next-date">📅 Arrange with GP — 6 to 8 weeks after discharge</div></div></div>
+        <div class="next-row"><div class="next-num">4</div><div><div class="next-title">Rest — and walk gently</div><div class="next-body">Short flat walks are safe and encouraged from day one. Avoid heavy lifting or anything causing chest discomfort. Your rehab team will guide you on building up activity week by week.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WARNINGS -->
+  <div class="tab-content" id="tc-warnings-0">
+    <div class="page">
+      <div class="sec-lbl" style="margin-top:0">⚠️ Signs to watch for</div>
+      <div class="watch-card"><div class="watch-title">⚠️ Contact your doctor if you notice:</div><div class="watch-list"><div class="watch-item">Chest tightness, pressure or pain — even if mild</div><div class="watch-item">Unusual breathlessness at rest or during light activity</div><div class="watch-item">Swelling in your legs or ankles getting worse</div><div class="watch-item">Feeling dizzy, faint, or heart racing or skipping beats</div><div class="watch-item">Muscle pain or weakness — possible side effect of the statin</div></div></div>
+      <div class="sos-card" style="margin-top:8px"><div class="sos-ico">🚨</div><div><div class="sos-title">Call 112 immediately if:</div><div class="sos-body">You have severe chest pain, sudden difficulty breathing, or you feel like something is seriously wrong. Do not wait. Do not drive yourself. Call 112 and tell them you had a heart attack last month.</div></div></div>
+    </div>
+  </div>
+
+  <!-- COMPANION -->
+  <div class="tab-content" id="tc-companion-0">
+    <div class="page">
+      <div class="companion-section">
+        <div class="companion-header">
+          <div class="comp-av" id="compAv0">🌿<div class="comp-status" id="compStat0"></div></div>
+          <div>
+            <div style="display:flex;align-items:center;gap:7px"><div class="comp-name">Companion</div><div class="comp-tag">AI Health Guide</div></div>
+            <div class="comp-disc">Has read your full admission · Not a doctor · Always check with Dr. Costa</div>
+          </div>
+          <div class="voice-status" id="voiceStatus0">
+            <div class="dot"></div><span id="voiceLabel0">Ready</span>
+            <button class="speaker-btn" id="spkBtn0" onclick="tSpk(0)" title="Toggle voice responses">🔊</button>
+          </div>
+        </div>
+        <div class="chat-area" id="chatArea0">
+          <div class="msg comp"><div class="msg-bubble">Hi João 👋 I have read everything from your admission and can explain any part of it in plain words — what happened, what each medicine does, or what to expect during recovery.<br><br>You can type your question or tap the 🎤 microphone to speak. I am not a doctor, so I will not give medical advice — but I can help you understand your stay. What would you like to know?</div><div class="msg-t">Now</div><div class="msg-ai">🤖 AI · Always confirm with your doctor</div></div>
+        </div>
+        <div class="quick-q-row">
+          <div class="qq" onclick="sQ0('What is a stent exactly?')">What is a stent?</div>
+          <div class="qq" onclick="sQ0('Why do I need two blood thinners?')">Two blood thinners?</div>
+          <div class="qq" onclick="sQ0('What does 48% heart pumping mean?')">48% pumping?</div>
+          <div class="qq" onclick="sQ0('When can I exercise again?')">When can I exercise?</div>
+          <div class="qq" onclick="sQ0('What is cardiac rehabilitation?')">What is rehab?</div>
+        </div>
+        <div class="input-row">
+          <button class="mic-btn" id="micBtn0" onclick="tMic(0)" title="Tap to speak">🎤</button>
+          <input class="chat-inp" id="chatInp0" placeholder="Ask anything about your stay…" onkeypress="if(event.key==='Enter')sMsg(0)">
+          <button class="send-btn" id="sendBtn0" onclick="sMsg(0)">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ PATIENT 1 — ANA SILVA ══════════════════════════ -->
+
+<div id="patient-1" style="display:none">
+
+  <!-- JOURNEY -->
+  <div class="tab-content active" id="tc-journey-1">
+    <div class="page">
+      <div class="hero">
+        <div class="hero-band ortho">
+          <div class="hero-greeting">Bem-vinda, Ana</div>
+          <div class="hero-title">O que aconteceu<br><em style="font-style:italic;opacity:.85">durante a sua cirurgia ao joelho</em></div>
+          <div class="hero-stats">
+            <div class="hstat"><div class="hstat-val">4</div><div class="hstat-lbl">Dias internada</div></div>
+            <div class="hstat"><div class="hstat-val">1</div><div class="hstat-lbl">Operação realizada</div></div>
+            <div class="hstat"><div class="hstat-val">3</div><div class="hstat-lbl">Novos medicamentos</div></div>
+            <div class="hstat"><div class="hstat-val">4</div><div class="hstat-lbl">Seguimentos necessários</div></div>
+          </div>
+        </div>
+        <div class="hero-body">
+          <div class="diag-block">
+            <div class="diag-icon">🦵</div>
+            <div>
+              <div class="diag-lbl">A sua operação</div>
+              <div class="diag-title">Substituição total do joelho direito</div>
+              <div class="diag-plain">A cartilagem do seu joelho direito estava completamente desgastada, causando dores intensas. Os cirurgiões substituíram a articulação danificada por um implante de metal e plástico — um joelho novo que durará 15 a 25 anos. A cirurgia correu muito bem.</div>
+            </div>
+          </div>
+          <div class="hero-meta">
+            <div class="hm">🏥 Hospital · 3–7 Março 2025</div>
+            <div class="hm">👨‍⚕️ Dr. António Mota · Ortopedia</div>
+            <div class="hm">✓ Alta em 7 Março</div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-lbl">📅 O que aconteceu em cada dia</div>
+      <!-- DAY 1 -->
+      <div class="day-card open" id="d1-1"><div class="day-trigger" onclick="tD('d1-1')"><div class="day-badge hi-blue"><div class="db-num">1</div><div class="db-lbl">Dia</div></div><div class="day-info"><div class="day-main">Chegou ao hospital — avaliação pré-operatória</div><div class="day-sub">Segunda-feira, 3 de Março</div></div><div class="day-chip" style="background:var(--blue-bg);color:var(--blue)">Pré-op</div><div class="day-chev">▸</div></div><div class="day-body"><div class="ev"><div class="ev-ico">🩺</div><div><div class="ev-title">Avaliação de saúde pré-cirurgia</div><div class="ev-body">A equipa de anestesiologia avaliou o seu coração, pulmões e análises de sangue antes da operação. Os anticoagulantes que tomava foram suspensos com segurança antes da cirurgia para reduzir o risco de hemorragia.</div></div></div><div class="ev"><div class="ev-ico">📋</div><div><div class="ev-title">Consentimento e preparação</div><div class="ev-body">O Dr. Mota explicou o procedimento, o implante a utilizar e o que esperar durante a recuperação. Assinou o consentimento informado e foi preparada para o bloco operatório.</div></div></div></div></div>
+      <!-- DAY 2 -->
+      <div class="day-card" id="d1-2"><div class="day-trigger" onclick="tD('d1-2')"><div class="day-badge hi-blue"><div class="db-num">2</div><div class="db-lbl">Dia</div></div><div class="day-info"><div class="day-main">O dia da sua operação</div><div class="day-sub">Terça-feira, 4 de Março</div></div><div class="day-chip" style="background:var(--blue-bg);color:var(--blue)">🔵 Cirurgia</div><div class="day-chev">▸</div></div><div class="day-body"><div class="ev"><div class="ev-ico">🦴</div><div><div class="ev-title">Substituição total do joelho realizada</div><div class="ev-body">A operação demorou aproximadamente 90 minutos sob anestesia espinhal — que entorpeceu a parte inferior do seu corpo enquanto se manteve confortável. A cartilagem desgastada e as superfícies ósseas foram removidas e substituídas por uma articulação de metal e plástico.<div class="why-box blue"><span>💡</span><span>A nova articulação é feita de liga de titânio (as partes metálicas) e plástico de grau médico no meio. Foi concebida para se mover como um joelho natural — caminhar, subir escadas e nadar serão possíveis durante a sua recuperação.</span></div></div></div></div><div class="ev"><div class="ev-ico">🏥</div><div><div class="ev-title">Sala de recobro e primeiras horas</div><div class="ev-body">Após a cirurgia foi monitorizada na sala de recobro durante 2 horas. A dor foi controlada com medicamentos. O novo joelho foi penso. Foi administrada injeção de prevenção de coágulos.</div></div></div><div class="ev"><div class="ev-ico">🚶</div><div><div class="ev-title">Primeiros passos — no mesmo dia</div><div class="ev-body">Com a ajuda do fisioterapeuta, levantou-se e deu alguns passos na mesma noite da cirurgia — esta é a abordagem padrão e ajuda a prevenir coágulos de sangue. É esperado que seja desconfortável, e esse desconforto é normal e temporário.<div class="why-box blue"><span>💡</span><span>Levantar-se cedo não é opcional — é uma das coisas mais importantes para a sua recuperação. Quanto mais cedo andar, mais rapidamente o novo joelho cura e menor é o risco de complicações.</span></div></div></div></div></div></div>
+      <!-- DAY 3 -->
+      <div class="day-card" id="d1-3"><div class="day-trigger" onclick="tD('d1-3')"><div class="day-badge"><div class="db-num">3</div><div class="db-lbl">Dia</div></div><div class="day-info"><div class="day-main">A fisioterapia começa a sério</div><div class="day-sub">Quarta-feira, 5 de Março</div></div><div class="day-chip" style="background:var(--sage-bg);color:var(--sage)">Reabilitação</div><div class="day-chev">▸</div></div><div class="day-body"><div class="ev"><div class="ev-ico">🤸</div><div><div class="ev-title">Duas sessões de fisioterapia hoje</div><div class="ev-body">A equipa de fisioterapia trabalhou consigo na flexão do joelho, no seu endireitamento e na caminhada com canadianas. Foram-lhe mostrados os exercícios que precisará de fazer em casa todos os dias.<div class="num-row"><div class="nchip"><span class="nc-lbl">Knee bend target</span><span class="nc-val bl">90° by week 6</span></div><div class="nchip"><span class="nc-lbl">Today achieved</span><span class="nc-val ok">45°</span></div></div></div></div></div><div class="ev"><div class="ev-ico">💉</div><div><div class="ev-title">Prevenção de coágulos continua</div><div class="ev-body">Recebeu uma injeção diária para fluidificar o sangue e prevenir a formação de coágulos na perna. Precisará de se administrar esta injeção em casa durante 28 dias após a cirurgia.</div></div></div><div class="ev"><div class="ev-ico">🔬</div><div><div class="ev-title">Análises de sangue e verificação da ferida</div><div class="ev-body">As análises de sangue confirmaram que a sua hemoglobina (contagem de glóbulos vermelhos) estava satisfatória após a cirurgia. A ferida foi verificada — sem sinais de infeção, a cicatrizar bem.<div class="num-row"><div class="nchip"><span class="nc-lbl">Haemoglobin</span><span class="nc-val ok">11.2 g/dL</span></div><div class="nchip"><span class="nc-lbl">WBC (infection)</span><span class="nc-val ok">Normal</span></div></div></div></div></div></div></div>
+      <!-- DAY 4 -->
+      <div class="day-card" id="d1-4"><div class="day-trigger" onclick="tD('d1-4')"><div class="day-badge hi-blue"><div class="db-num">4</div><div class="db-lbl">Dia</div></div><div class="day-info"><div class="day-main">Foi para casa</div><div class="day-sub">Quinta-feira, 7 de Março</div></div><div class="day-chip" style="background:var(--teal-bg);color:var(--teal)">✓ Casa</div><div class="day-chev">▸</div></div><div class="day-body"><div class="ev"><div class="ev-ico">📝</div><div><div class="ev-title">Verificações finais e alta</div><div class="ev-body">Ferida revista uma última vez. O fisioterapeuta confirmou que estava em segurança para ir a casa com canadianas. Enfermeira de saúde comunitária programada para verificação da ferida em 3 dias. Sessões de fisioterapia em ambulatório marcadas.</div></div></div><div class="ev"><div class="ev-ico">🏠</div><div><div class="ev-title">Foi para casa com o seu novo joelho</div><div class="ev-body">Saiu com os seus medicamentos, um plano detalhado de cuidados à ferida, o kit de injeção diária e o seu programa de fisioterapia. A recuperação em casa é onde o trabalho mais importante acontece.<div class="why-box blue"><span>💡</span><span>A sua dedicação aos exercícios nas próximas 12 semanas determinará o quão bem o novo joelho funciona nos próximos 20 anos. Cada sessão é importante — mesmo quando é desconfortável.</span></div></div></div></div></div></div>
+    </div>
+  </div>
+
+  <!-- MEDS ANA -->
+  <div class="tab-content" id="tc-meds-1">
+    <div class="page">
+      <div class="sec-lbl" style="margin-top:0">💊 Os seus medicamentos — toque em cada um para saber mais</div>
+      <div class="meds-grid">
+        <!-- Enoxaparin -->
+        <div class="med-item" id="m1-1"><div class="med-trigger" onclick="tM('m1-1')"><div class="med-ico" style="background:#FDEDF0">💉</div><div class="med-name-row"><div class="med-name">Enoxaparina (injeção) <span class="badge-crit">🔴 Importante</span> <span class="badge-new">Novo</span></div><div class="med-dose">Uma injeção por dia · 28 dias após a cirurgia</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">Após a cirurgia ao joelho, o sangue pode acumular-se nas veias das pernas e formar coágulos — chama-se TVP (trombose venosa profunda). A enoxaparina é um anticoagulante que previne isso. Injeta-se sozinha na pele à volta da barriga, uma vez por dia.</div><div class="med-warn"><span>⚠️</span><span>Não salte nenhuma dose. Se tiver dúvidas sobre como injetar, a enfermeira de saúde comunitária mostra-lhe. Complete os 28 dias mesmo que se sinta bem.</span></div><div class="med-tip"><span>✓</span><span>Rode o local da injeção todos os dias — a pele à volta da barriga tem várias zonas que pode usar.</span></div><div class="med-ask" onclick="askComp('Como faço a injeção de enoxaparina e porque é que preciso dela?')"><span>✨</span>Perguntar ao Companion sobre esta injeção →</div></div></div>
+        <!-- Paracetamol -->
+        <div class="med-item" id="m1-2"><div class="med-trigger" onclick="tM('m1-2')"><div class="med-ico" style="background:#DBEAFE">💊</div><div class="med-name-row"><div class="med-name">Paracetamol 1g <span class="badge-new">Novo</span></div><div class="med-dose">Quatro vezes por dia · Horário regular · 6 semanas</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">O paracetamol controla a dor após a cirurgia quando tomado regularmente — não apenas quando sente dor. Tomá-lo em horário fixo mantém um nível constante no sangue, para que a dor seja controlada antes de se intensificar, tornando os exercícios de fisioterapia muito mais fáceis.</div><div class="med-tip"><span>✓</span><span>Tome regularmente de 6 em 6 horas mesmo que se sinta bem — não espere até a dor ser intensa. É assim que funciona melhor.</span></div><div class="med-ask" onclick="askComp('Porque preciso de tomar paracetamol regularmente mesmo quando não tenho dor?')"><span>✨</span>Perguntar ao Companion sobre o paracetamol →</div></div></div>
+        <!-- Ibuprofen -->
+        <div class="med-item" id="m1-3"><div class="med-trigger" onclick="tM('m1-3')"><div class="med-ico" style="background:#E6F5F3">💊</div><div class="med-name-row"><div class="med-name">Ibuprofeno 400mg <span class="badge-new">Novo</span></div><div class="med-dose">Três vezes por dia · Com alimentos · 4 semanas</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">Reduz o inchaço e a inflamação à volta do joelho novo. Funciona em conjunto com o paracetamol para manter a dor controlada o suficiente para fazer fisioterapia. O inchaço é normal após a substituição do joelho — este medicamento ajuda a controlá-lo.</div><div class="med-warn"><span>⚠️</span><span>Tome sempre com alimentos para proteger o estômago. Pare e contacte o cirurgião se notar dor de estômago ou fezes escuras.</span></div><div class="med-ask" onclick="askComp('Porque preciso de ibuprofeno além do paracetamol?')"><span>✨</span>Perguntar ao Companion sobre o ibuprofeno →</div></div></div>
+        <!-- Lactulose -->
+        <div class="med-item" id="m1-4"><div class="med-trigger" onclick="tM('m1-4')"><div class="med-ico" style="background:#FEF9C3">🌿</div><div class="med-name-row"><div class="med-name">Lactulose / Laxante <span class="badge-new">Novo</span></div><div class="med-dose">Conforme necessário · Enquanto tomar analgésicos fortes</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">Os analgésicos fortes que tomou durante e após a cirurgia podem causar obstipação (dificuldade em ir à casa de banho). A lactulose amolece as fezes e facilita a evacuação. Tome se não tiver ido à casa de banho há mais de 2 dias.</div><div class="med-tip"><span>✓</span><span>Beba bastante água — pelo menos 1,5 litros por dia. Isso também ajuda a prevenir a obstipação e os coágulos.</span></div><div class="med-ask" onclick="askComp('Porque é que a cirurgia causa obstipação e como posso preveni-la?')"><span>✨</span>Perguntar ao Companion sobre a obstipação →</div></div></div>
+        <!-- Omeprazole -->
+        <div class="med-item" id="m1-5"><div class="med-trigger" onclick="tM('m1-5')"><div class="med-ico" style="background:#FCE7F3">💊</div><div class="med-name-row"><div class="med-name">Omeprazol 20mg <span class="badge-new">Novo</span></div><div class="med-dose">Uma vez por dia · De manhã · Enquanto tomar ibuprofeno</div></div><div class="med-chev">▾</div></div><div class="med-detail"><div class="med-why">O ibuprofeno que está a tomar pode irritar o revestimento do estômago se tomado durante várias semanas. O omeprazol protege o estômago, reduzindo a quantidade de ácido que produz. Deve tomar enquanto estiver a fazer ibuprofeno.</div><div class="med-warn"><span>⚠️</span><span>Tome sempre o ibuprofeno com comida E com o omeprazol. Se mesmo assim sentir azia ou dor de estômago, contacte o médico.</span></div><div class="med-ask" onclick="askComp('Para que serve o omeprazol e porque é que o preciso de tomar com o ibuprofeno?')"><span>✨</span>Perguntar ao Companion sobre o omeprazol →</div></div></div>
+    </div>
+  </div>
+</div>
+
+  <div class="tab-content" id="tc-next-1">
+    <div class="page">
+      <div class="sec-lbl" style="margin-top:0">📋 O que fazer depois de chegar a casa</div>
+      <div class="next-card">
+        <div class="next-row"><div class="next-num urg">!</div><div><div class="next-title">Faça os exercícios todos os dias — sem exceção</div><div class="next-body">O programa de fisioterapia que lhe foi dado é a parte mais importante da sua recuperação. O joelho vai endurecer rapidamente se não o exercitar — tornando a recuperação futura muito mais difícil. Investigações mostram que a adesão à fisioterapia digital depois da cirurgia ao joelho é de 77% em média — os que completam têm melhores resultados.</div></div></div>
+        <div class="next-row"><div class="next-num urg">!</div><div><div class="next-title">Faça a injeção diária durante 28 dias</div><div class="next-body">A injeção de enoxaparina previne coágulos de sangue perigosos nas pernas. Não pare mais cedo mesmo que se sinta bem. A enfermeira de saúde comunitária verifica a técnica da primeira injeção.</div><div class="next-date">📅 Visita da enfermeira · 10 de Março (3 dias após a alta)</div></div></div>
+        <div class="next-row"><div class="next-num blue">1</div><div><div class="next-title">Verificação da ferida com o médico de família ou enfermeira</div><div class="next-body">Os pontos ou agrafos da ferida precisam de ser verificados e retirados por volta dos 10 a 14 dias. Observe se há vermelhidão, inchaço ou secreção que se está a alastrar.</div><div class="next-date">📅 Marcar: 14–17 de Março · Centro de Saúde</div></div></div>
+        <div class="next-row"><div class="next-num blue">2</div><div><div class="next-title">Sessões de fisioterapia em ambulatório</div><div class="next-body">6 sessões supervisionadas marcadas no centro de reabilitação. Baseiam-se no que aprendeu no hospital. Compareça a todas — são a chave para dobrar o joelho até 90° e além.</div><div class="next-date">📅 Primeira sessão: 18 de Março · CRC Lisboa</div></div></div>
+        <div class="next-row"><div class="next-num">3</div><div><div class="next-title">Consulta de seguimento às 6 semanas com Dr. António Mota</div><div class="next-body">Serão feitas radiografias para confirmar que o novo joelho está a estabilizar corretamente. O Dr. Mota verificará a ferida, a amplitude de movimento e se pode começar a reduzir o uso das canadianas.</div><div class="next-date">📅 18 de Abril 2025 · Ortopedia ambulatório</div></div></div>
+        <div class="next-row"><div class="next-num">4</div><div><div class="next-title">Reduza gradualmente o uso das canadianas</div><div class="next-body">Vai precisar das duas canadianas nas primeiras 2 semanas, depois normalmente uma canadiana nas semanas 3–6. O seu fisioterapeuta irá orientá-la — não apresse este processo. Uma queda poderia danificar o novo implante.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WARNINGS ANA - PORTUGUESE -->
+  <div class="tab-content" id="tc-warnings-1">
+    <div class="page">
+      <div class="sec-lbl" style="margin-top:0">⚠️ Sinais a vigiar após a cirurgia ao joelho</div>
+      <div class="watch-card"><div class="watch-title">⚠️ Contacte o Dr. Mota ou o médico de família urgentemente se notar:</div><div class="watch-list"><div class="watch-item">Vermelhidão, calor ou inchaço à volta da ferida que se está a alastrar ou a piorar</div><div class="watch-item">Secreção da ferida amarela, verde ou com mau cheiro</div><div class="watch-item">A barriga da perna fica muito inchada, dolorosa ou quente — pode ser um coágulo TVP</div><div class="watch-item">Febre acima de 38°C em casa</div><div class="watch-item">O joelho faz um estalido ou clique que parece errado</div><div class="watch-item">Dor que está a piorar em vez de melhorar gradualmente após a primeira semana</div></div></div>
+      <div class="sos-card" style="margin-top:8px"><div class="sos-ico">🚨</div><div><div class="sos-title">Vá ao serviço de urgência imediatamente se:</div><div class="sos-body">A sua barriga da perna está vermelha, inchada e muito dolorosa E tem dificuldade em respirar ou dor no peito — pode ser um coágulo que se deslocou para o pulmão (embolia pulmonar). É uma emergência. Ligue 112.</div></div></div>
+    </div>
+  </div>
+
+  <!-- COMPANION ANA - PORTUGUESE -->
+  <div class="tab-content" id="tc-companion-1">
+    <div class="page">
+      <div class="companion-section">
+        <div class="companion-header">
+          <div class="comp-av" id="compAv1">🌿<div class="comp-status" id="compStat1"></div></div>
+          <div>
+            <div style="display:flex;align-items:center;gap:7px"><div class="comp-name">Companion</div><div class="comp-tag">Guia de Saúde com IA</div></div>
+            <div class="comp-disc">Leu o registo completo da sua cirurgia ao joelho · Não é médico · Confirme sempre com o Dr. Mota</div>
+          </div>
+          <div class="voice-status" id="voiceStatus1">
+            <div class="dot"></div><span id="voiceLabel1">Pronto</span>
+            <button class="speaker-btn" id="spkBtn1" onclick="tSpk(1)" title="Ativar/desativar voz">🔊</button>
+          </div>
+        </div>
+        <div class="chat-area" id="chatArea1">
+          <div class="msg comp"><div class="msg-bubble">Olá Ana 👋 Li tudo sobre a sua cirurgia ao joelho e posso explicar qualquer parte em palavras simples — o que envolveu a operação, para que serve cada medicamento ou o que esperar durante a recuperação em casa.<br><br>Pode escrever a sua pergunta ou tocar no 🎤 microfone para falar. O que gostaria de saber?</div><div class="msg-t">Agora</div><div class="msg-ai">🤖 IA · Confirme sempre com o seu médico</div></div>
+        </div>
+        <div class="quick-q-row">
+          <div class="qq" onclick="sQ1('O que é exatamente uma prótese de joelho?')">O que é uma prótese?</div>
+          <div class="qq" onclick="sQ1('Porque preciso de me injetar todos os dias?')">Porque injetar?</div>
+          <div class="qq" onclick="sQ1('Quanta dor é normal após a cirurgia ao joelho?')">Quanta dor é normal?</div>
+          <div class="qq" onclick="sQ1('Que exercícios devo fazer em casa após a cirurgia ao joelho?')">Exercícios em casa?</div>
+          <div class="qq" onclick="sQ1('Quando posso voltar a conduzir após a cirurgia ao joelho?')">Quando posso conduzir?</div>
+          <div class="qq" onclick="sQ1('Como devo cuidar da ferida da cirurgia em casa?')">Cuidar da ferida?</div>
+          <div class="qq" onclick="sQ1('Quando posso começar a dobrar o joelho normalmente?')">Quando dobro o joelho?</div>
+        </div>
+        <div class="input-row">
+          <button class="mic-btn" id="micBtn1" onclick="tMic(1)" title="Toque para falar">🎤</button>
+          <input class="chat-inp" id="chatInp1" placeholder="Pergunte qualquer coisa sobre a sua cirurgia…" onkeypress="if(event.key==='Enter')sMsg(1)">
+          <button class="send-btn" id="sendBtn1" onclick="sMsg(1)">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACKING TAB - POST DISCHARGE MONITORING - PORTUGUESE -->
+  <div class="tab-content" id="tc-tracking-1">
+    <div class="page">
+      <div class="sec-lbl" style="margin-top:0">📊 Acompanhamento pós-alta</div>
+
+      <!-- PROGRESS BAR SUMMARY -->
+      <div style="background:var(--white);border:1.5px solid var(--bg3);border-radius:var(--r);padding:18px 20px;margin-bottom:14px;box-shadow:var(--sh)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div>
+            <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:500">Semana 2 de recuperação</div>
+            <div style="font-size:12.5px;color:var(--ink3);margin-top:2px">Alta: 7 Março · Hoje: 21 Março 2025</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:600;color:var(--sage)">74%</div>
+            <div style="font-size:11px;color:var(--ink3)">Adesão global</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div style="background:var(--sage-bg);border:1px solid var(--sage-br);border-radius:var(--rsm);padding:11px 13px;text-align:center">
+            <div style="font-size:22px;font-weight:700;color:var(--sage);font-family:'Fraunces',serif">11/14</div>
+            <div style="font-size:11.5px;color:var(--sage);margin-top:2px;font-weight:500">Sessões fisioterapia</div>
+            <div style="font-size:10.5px;color:var(--ink3);margin-top:1px">79% adesão</div>
+          </div>
+          <div style="background:var(--amb-bg);border:1px solid var(--amb-br);border-radius:var(--rsm);padding:11px 13px;text-align:center">
+            <div style="font-size:22px;font-weight:700;color:var(--amber);font-family:'Fraunces',serif">12/14</div>
+            <div style="font-size:11.5px;color:var(--amber);margin-top:2px;font-weight:500">Injeções tomadas</div>
+            <div style="font-size:10.5px;color:var(--ink3);margin-top:1px">86% — 2 em falta</div>
+          </div>
+          <div style="background:var(--teal-bg);border:1px solid var(--teal-br);border-radius:var(--rsm);padding:11px 13px;text-align:center">
+            <div style="font-size:22px;font-weight:700;color:var(--teal);font-family:'Fraunces',serif">57°</div>
+            <div style="font-size:11.5px;color:var(--teal);margin-top:2px;font-weight:500">Flexão do joelho</div>
+            <div style="font-size:10.5px;color:var(--ink3);margin-top:1px">Objetivo: 90° às 6 sem.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAILY CHECK-IN -->
+      <div style="background:var(--white);border:1.5px solid var(--bg3);border-radius:var(--r);overflow:hidden;margin-bottom:14px;box-shadow:var(--sh)">
+        <div style="padding:13px 16px;border-bottom:1.5px solid var(--bg2);background:linear-gradient(135deg,var(--blue),#1D4ED8);color:#fff">
+          <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:500;margin-bottom:2px">📋 Registo diário de hoje</div>
+          <div style="font-size:12px;opacity:.85">21 de Março · Dia 14 após cirurgia</div>
+        </div>
+        <div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+
+          <!-- Pain score -->
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px">Qual é o nível de dor hoje? <span style="color:var(--ink3);font-weight:400;font-size:12px">(0 = sem dor · 10 = dor máxima)</span></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="0" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--sage-br);background:var(--sage-bg);color:var(--sage);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">0</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="1" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--sage-br);background:var(--sage-bg);color:var(--sage);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">1</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="2" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--sage-br);background:var(--sage-bg);color:var(--sage);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">2</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="3" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--amb-br);background:var(--amb-bg);color:var(--amber);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">3</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="4" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--amb-br);background:var(--amb-bg);color:var(--amber);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">4</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn selected" data-val="5" style="width:38px;height:38px;border-radius:50%;border:2px solid var(--amber);background:var(--amber);color:#fff;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">5</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="6" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--rose-br);background:var(--rose-bg);color:var(--rose);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">6</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="7" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--rose-br);background:var(--rose-bg);color:var(--rose);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">7</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="8" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--rose-br);background:var(--rose-bg);color:var(--rose);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">8</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="9" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--rose-br);background:var(--rose-bg);color:var(--rose);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">9</button>
+              <button onclick="selectScore(this,'pain')" class="score-btn" data-val="10" style="width:38px;height:38px;border-radius:50%;border:1.5px solid var(--rose-br);background:var(--rose-bg);color:var(--rose);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:.15s">10</button>
+            </div>
+            <div style="font-size:12px;color:var(--amber);margin-top:6px">Nível 5 registado — semelhante a ontem. A dor moderada é esperada nesta fase.</div>
+          </div>
+
+          <!-- Checkboxes -->
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:2px">O que fez hoje?</div>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:9px 12px;background:var(--sage-bg);border:1.5px solid var(--sage-br);border-radius:var(--rsm)"><input type="checkbox" checked style="width:17px;height:17px;accent-color:var(--sage)"><span style="font-size:13.5px;font-weight:500;color:var(--sage)">Fiz os exercícios de fisioterapia de manhã ✓</span></label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:9px 12px;background:var(--bg2);border:1.5px solid var(--bg3);border-radius:var(--rsm)"><input type="checkbox" style="width:17px;height:17px;accent-color:var(--blue)"><span style="font-size:13.5px;color:var(--ink2)">Fiz os exercícios de fisioterapia à tarde</span></label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:9px 12px;background:var(--sage-bg);border:1.5px solid var(--sage-br);border-radius:var(--rsm)"><input type="checkbox" checked style="width:17px;height:17px;accent-color:var(--sage)"><span style="font-size:13.5px;font-weight:500;color:var(--sage)">Tomei a injeção de enoxaparina ✓</span></label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:9px 12px;background:var(--sage-bg);border:1.5px solid var(--sage-br);border-radius:var(--rsm)"><input type="checkbox" checked style="width:17px;height:17px;accent-color:var(--sage)"><span style="font-size:13.5px;font-weight:500;color:var(--sage)">Tomei o paracetamol e o ibuprofeno ✓</span></label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:9px 12px;background:var(--bg2);border:1.5px solid var(--bg3);border-radius:var(--rsm)"><input type="checkbox" style="width:17px;height:17px;accent-color:var(--blue)"><span style="font-size:13.5px;color:var(--ink2)">Caminhei pelo menos 15 minutos hoje</span></label>
+          </div>
+
+          <!-- Wound question -->
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px">Como está a ferida hoje?</div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap">
+              <button onclick="woundSelect(this,'bem')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--sage-br);background:var(--sage-bg);color:var(--sage);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer" class="wound-btn selected">✓ Bem — cicatrizando</button>
+              <button onclick="woundSelect(this,'inchaço')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--amb-br);background:var(--amb-bg);color:var(--amber);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer" class="wound-btn">⚠️ Algum inchaço</button>
+              <button onclick="woundSelect(this,'preocupante')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--rose-br);background:var(--rose-bg);color:var(--rose);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer" class="wound-btn">🚨 Preocupante</button>
+            </div>
+          </div>
+
+          <button onclick="submitCheckin()" style="background:var(--blue);color:#fff;border:none;border-radius:9px;padding:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;width:100%;transition:.18s">Guardar registo de hoje →</button>
+        </div>
+      </div>
+
+      <!-- REMINDERS -->
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin-bottom:10px;display:flex;align-items:center;gap:9px">🔔 Lembretes ativos<span style="flex:1;height:1px;background:var(--bg3)"></span></div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px">
+        <div style="background:var(--white);border:1.5px solid var(--blue-br);border-radius:var(--rsm);padding:11px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh)">
+          <span style="font-size:20px">🤸</span>
+          <div style="flex:1">
+            <div style="font-size:13.5px;font-weight:600;color:var(--blue)">Fisioterapia — manhã</div>
+            <div style="font-size:12px;color:var(--ink3)">Todos os dias · 09:00 · 20 minutos</div>
+          </div>
+          <span style="font-size:11px;background:var(--sage-bg);color:var(--sage);border:1px solid var(--sage-br);border-radius:5px;padding:2px 7px;font-weight:600">Feito ✓</span>
+        </div>
+        <div style="background:var(--white);border:1.5px solid var(--blue-br);border-radius:var(--rsm);padding:11px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh)">
+          <span style="font-size:20px">🤸</span>
+          <div style="flex:1">
+            <div style="font-size:13.5px;font-weight:600;color:var(--blue)">Fisioterapia — tarde</div>
+            <div style="font-size:12px;color:var(--ink3)">Todos os dias · 15:00 · 20 minutos</div>
+          </div>
+          <span style="font-size:11px;background:var(--amb-bg);color:var(--amber);border:1px solid var(--amb-br);border-radius:5px;padding:2px 7px;font-weight:600">Pendente</span>
+        </div>
+        <div style="background:var(--white);border:1.5px solid var(--rose-br);border-radius:var(--rsm);padding:11px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh)">
+          <span style="font-size:20px">💉</span>
+          <div style="flex:1">
+            <div style="font-size:13.5px;font-weight:600;color:var(--rose)">Injeção de enoxaparina</div>
+            <div style="font-size:12px;color:var(--ink3)">Todos os dias · 21:00 · Até 4 Abril</div>
+          </div>
+          <span style="font-size:11px;background:var(--sage-bg);color:var(--sage);border:1px solid var(--sage-br);border-radius:5px;padding:2px 7px;font-weight:600">Feito ✓</span>
+        </div>
+        <div style="background:var(--white);border:1.5px solid var(--bg3);border-radius:var(--rsm);padding:11px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh)">
+          <span style="font-size:20px">💊</span>
+          <div style="flex:1">
+            <div style="font-size:13.5px;font-weight:600">Paracetamol + Ibuprofeno</div>
+            <div style="font-size:12px;color:var(--ink3)">4x por dia · 08:00 / 14:00 / 20:00 / 02:00</div>
+          </div>
+          <span style="font-size:11px;background:var(--sage-bg);color:var(--sage);border:1px solid var(--sage-br);border-radius:5px;padding:2px 7px;font-weight:600">Feito ✓</span>
+        </div>
+        <div style="background:var(--white);border:1.5px solid var(--bg3);border-radius:var(--rsm);padding:11px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh)">
+          <span style="font-size:20px">📅</span>
+          <div style="flex:1">
+            <div style="font-size:13.5px;font-weight:600">Consulta Dr. Mota — 6 semanas</div>
+            <div style="font-size:12px;color:var(--ink3)">18 de Abril 2025 · Ortopedia ambulatório</div>
+          </div>
+          <span style="font-size:11px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-br);border-radius:5px;padding:2px 7px;font-weight:600">28 dias</span>
+        </div>
+      </div>
+
+      <!-- READMISSION RISK INDICATOR -->
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin-bottom:10px;display:flex;align-items:center;gap:9px">🛡️ Risco de readmissão<span style="flex:1;height:1px;background:var(--bg3)"></span></div>
+      <div style="background:var(--white);border:1.5px solid var(--bg3);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh);margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+          <div style="width:56px;height:56px;border-radius:50%;background:var(--sage-bg);border:3px solid var(--sage);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <div style="text-align:center"><div style="font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--sage);line-height:1">Baixo</div></div>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--sage)">Risco de readmissão: Baixo</div>
+            <div style="font-size:12.5px;color:var(--ink3);margin-top:2px">Com base nos registos dos últimos 14 dias</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="color:var(--sage);font-weight:700">✓</span><span style="color:var(--ink2)">Fisioterapia: 79% de adesão — acima da média</span></div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="color:var(--sage);font-weight:700">✓</span><span style="color:var(--ink2)">Sem sinais de alerta de infeção da ferida reportados</span></div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="color:var(--sage);font-weight:700">✓</span><span style="color:var(--ink2)">Sem sintomas de TVP reportados</span></div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="color:var(--amber);font-weight:700">⚠️</span><span style="color:var(--ink2)">2 injeções de enoxaparina em falta — risco ligeiramente elevado até completar os 28 dias</span></div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="color:var(--sage);font-weight:700">✓</span><span style="color:var(--ink2)">Dor no nível 5 — esperado para a semana 2</span></div>
+        </div>
+        <div style="margin-top:10px;padding:9px 11px;background:var(--teal-bg);border:1px solid var(--teal-br);border-radius:6px;font-size:12.5px;color:var(--teal2);line-height:1.55">💡 Estudos mostram que o acompanhamento digital após cirurgia ao joelho pode reduzir as readmissões em até 45%. Continue a registar os seus dados — o Dr. Mota vê este resumo antes da sua consulta de 18 de Abril.</div>
+      </div>
+
+      <!-- WEEKLY PROGRESS -->
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin-bottom:10px;display:flex;align-items:center;gap:9px">📈 Progresso semanal<span style="flex:1;height:1px;background:var(--bg3)"></span></div>
+      <div style="background:var(--white);border:1.5px solid var(--bg3);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:14px;font-size:12px;color:var(--ink3)">
+          <span>Flexão do joelho ao longo do tempo</span>
+          <span style="color:var(--teal);font-weight:600">Objetivo: 90° às 6 semanas</span>
+        </div>
+        <svg width="100%" height="80" viewBox="0 0 500 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <line x1="0" y1="10" x2="500" y2="10" stroke="#E0D8CC" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="0" y1="35" x2="500" y2="35" stroke="#E0D8CC" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="0" y1="60" x2="500" y2="60" stroke="#E0D8CC" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="0" y1="10" x2="500" y2="10" stroke="#0A8A7E" stroke-width="1.5" stroke-dasharray="5,4" opacity=".5"/>
+          <text x="440" y="8" fill="#0A8A7E" font-size="9" font-family="DM Mono,monospace" opacity=".8">90°</text>
+          <text x="2" y="34" fill="#7D7267" font-size="9" font-family="DM Mono,monospace">60°</text>
+          <text x="2" y="59" fill="#7D7267" font-size="9" font-family="DM Mono,monospace">30°</text>
+          <polyline points="50,75 150,68 250,57 380,43" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="50" cy="75" r="4" fill="#2563EB"/>
+          <circle cx="150" cy="68" r="4" fill="#2563EB"/>
+          <circle cx="250" cy="57" r="4" fill="#2563EB"/>
+          <circle cx="380" cy="43" r="5" fill="#2563EB" stroke="#fff" stroke-width="2"/>
+          <text x="34" y="73" fill="#7D7267" font-size="9" font-family="DM Mono,monospace">Alta</text>
+          <text x="136" y="66" fill="#7D7267" font-size="9" font-family="DM Mono,monospace">Sem 1</text>
+          <text x="236" y="55" fill="#7D7267" font-size="9" font-family="DM Mono,monospace">Sem 2</text>
+          <text x="363" y="41" fill="#2563EB" font-size="9" font-family="DM Mono,monospace" font-weight="500">57° hoje</text>
+        </svg>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-top:4px"><span>Alta: 30°</span><span>Sem 1: 42°</span><span>Sem 2: 57° ↑</span><span>Objetivo: 90°</span></div>
+        <div style="margin-top:10px;font-size:13px;color:var(--ink2);line-height:1.6">O seu joelho está a dobrar <strong style="color:var(--sage)">27° mais</strong> do que no dia da alta — bom progresso. Continue os exercícios duas vezes por dia para atingir os 90° antes da consulta de Abril.</div>
+      </div>
+
+    </div>
+  
+
+
+
+<script>
+
+var curPt = 0;
+var curTab = 'journey';
+var voiceOn = [false, false];
+var micOn = [false, false];
+var recognizers = [null, null];
+
+// ── Tab labels per patient ──
+var tabLabels = {
+  0: { journey:'📅 My journey', meds:'💊 Medicines', next:"📋 What's next", warnings:'⚠️ Warning signs', companion:'✨ Companion', tracking:'📊 Recovery' },
+  1: { journey:'📅 A minha jornada', meds:'💊 Medicamentos', next:'📋 Próximos passos', warnings:'⚠️ Sinais de alerta', companion:'✨ Companion', tracking:'📊 Recuperação' }
+};
+
+// ── Patient switch ──
+function switchPatient(p) {
+  curPt = p;
+  document.getElementById('patient-0').style.display = p===0?'':'none';
+  document.getElementById('patient-1').style.display = p===1?'':'none';
+  document.querySelectorAll('.patient-tab').forEach((t,i)=>t.classList.toggle('active',i===p));
+  var trackBtn = document.getElementById('st-tracking');
+  if(trackBtn) trackBtn.style.display = p===1?'':'none';
+  curTab='journey'; switchTab('journey');
+}
+
+// ── Section tabs ──
+function switchTab(name) {
+  curTab = name;
+  var labels = tabLabels[curPt]||tabLabels[0];
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+  Object.keys(labels).forEach(k=>{var el=document.getElementById('st-'+k);if(el)el.textContent=labels[k];});
+  document.getElementById('st-'+name).classList.add('active');
+  var pEl = document.getElementById('patient-'+curPt);
+  if(!pEl) return;
+  pEl.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  var tc = document.getElementById('tc-'+name+'-'+curPt);
+  if(tc) tc.classList.add('active');
+}
+
+// ── Day cards ──
+function tD(id){document.getElementById(id).classList.toggle('open')}
+function tM(id){document.getElementById(id).classList.toggle('open')}
+
+// ── Modal ──
+function oModal(){document.getElementById('shareModal').classList.add('show')}
+function cModal(){document.getElementById('shareModal').classList.remove('show')}
+
+// ── Medication safety guardrail ──
+var medG=/\b(dose|dosage|how much|mg|overdose|stop taking|double|change my (med|pill|prescription|drug)|should i take|can i take)\b/i;
+
+// ── Fallback responses ──
+var fb0 = {
+  'What is a stent exactly?': "A stent is a tiny metal mesh tube — like a small spring. Doctors expanded it inside your blocked artery, holding it permanently open. Your artery wall grows over it within weeks. Your blood thinners keep it safe while that happens. Your doctor can give you a precise answer about this.",
+  'Why do I need two blood thinners?': "Aspirin and clopidogrel each block blood clotting in a different way. Using both together is much stronger protection than either alone — very important while your stent heals. This combination is called DAPT. Your doctor can give you a precise answer about this.",
+  'What does 48% heart pumping mean?': "Ejection fraction measures how much blood your heart pushes out with each beat. Healthy is 55–70%. At 48% yours is pumping slightly less — called mildly reduced. This is very common after a heart attack and almost always improves with medicines and rehab. Your doctor can give you a precise answer about this.",
+  'When can I exercise again?': "Short flat walks are safe from day one. Driving usually returns after 4 weeks with no complications. Your cardiac rehab team will guide you week by week based on how your heart responds. Your doctor can give you a precise answer about this.",
+  'What is cardiac rehabilitation?': "Cardiac rehab is 18 supervised exercise sessions run by specialist nurses and physiotherapists who monitor your heart as you exercise — completely safe. It reduces the risk of another heart attack by up to 25%. Your doctor can give you a precise answer about this."
+};
+
+var fb1 = {
+  'O que é exatamente uma prótese de joelho?': "O cirurgião removeu a cartilagem e as superfícies ósseas desgastadas do seu joelho direito e substituiu-as por peças de metal e plástico que se encaixam com precisão. O metal é de titânio. O plástico fica no meio para que a articulação se mova suavemente. Foi concebida para durar 15 a 25 anos. O Dr. Mota pode dar-lhe uma resposta precisa sobre isto.",
+  'Porque preciso de me injetar todos os dias?': "Após a cirurgia ao joelho, o sangue pode acumular-se nas veias das pernas e formar coágulos perigosos. A injeção é um anticoagulante que previne isso durante os 28 dias em que o risco é maior. É feita debaixo da pele da barriga — não numa veia. O Dr. Mota pode dar-lhe uma resposta precisa sobre isto.",
+  'Quanta dor é normal após a cirurgia ao joelho?': "Alguma dor e inchaço são completamente normais durante 6 a 12 semanas. As primeiras duas semanas são normalmente as mais desconfortáveis. O paracetamol e o ibuprofeno regulares ajudam a controlá-la. Dor que piora em vez de melhorar gradualmente, ou que vem acompanhada de febre ou alterações na ferida, deve ser comunicada. O Dr. Mota pode dar-lhe uma resposta precisa sobre isto.",
+  'Que exercícios devo fazer em casa?': "Os exercícios principais são dobrar e esticar o joelho o máximo que conseguir confortavelmente, contrações do quadricípite — apertar o músculo da coxa — e bombear os tornozelos para manter a circulação. A folha de fisioterapia tem imagens. Faça-os várias vezes por dia. O Dr. Mota pode dar-lhe uma resposta precisa sobre isto.",
+  'Como devo cuidar da ferida da cirurgia em casa?': "Mantenha a ferida seca e limpa. Não mergulhe em banhos de imersão ou piscinas até estar completamente cicatrizada. Mude o penso conforme indicado pela enfermeira. Observe todos os dias se há vermelhidão, inchaço, secreção ou cheiro estranho. O Dr. Mota pode dar-lhe uma resposta precisa sobre isto.",
+  'Quando posso começar a dobrar o joelho normalmente?': "O objetivo é dobrar o joelho até 90 graus nas primeiras 6 semanas. No dia da alta conseguia dobrar cerca de 30 graus — cada semana vai melhorar com os exercícios. A fisioterapia é essencial para atingir uma flexão completa. O Dr. Mota pode dar-lhe uma resposta precisa sobre isto.",
+};
+
+// ── Companion — fallback only (no API, safe for public hosting) ──
+function sMsg(pt) {
+  var inp = document.getElementById('chatInp'+pt);
+  var q = inp.value.trim();
+  if(!q) return;
+  inp.value='';
+  addMsg(q,'user',pt);
+  if(medG.test(q)){
+    var dr=pt===0?'Dr. Costa':'Dr. Mota';
+    addMsg("I can't advise on changing medicine doses — please contact "+dr+" before changing anything. 🏥",'comp',pt);
+    return;
+  }
+  var ty=addTyping(pt);
+  document.getElementById('sendBtn'+pt).disabled=true;
+  setTimeout(function(){
+    ty.remove();
+    document.getElementById('sendBtn'+pt).disabled=false;
+    var fb=pt===0?fb0:fb1;
+    var reply=fb[q]||findClosestFallback(q,fb)||
+      (pt===0?"That's a great question for your appointment with Dr. Costa. Your doctor can give you a precise answer about this.":"Essa é uma boa pergunta para a sua consulta com o Dr. Mota. O Dr. Mota pode dar-lhe uma resposta precisa sobre isto.");
+    addMsg(reply,'comp',pt);
+    if(voiceOn[pt]) speak(reply,pt);
+  },900+Math.random()*400);
+}
+
+function findClosestFallback(q,fb){
+  var ql=q.toLowerCase();
+  var keys=Object.keys(fb);
+  for(var i=0;i<keys.length;i++){
+    var words=keys[i].toLowerCase().split(' ');
+    var matches=words.filter(function(w){return w.length>3&&ql.indexOf(w)>-1});
+    if(matches.length>=2) return fb[keys[i]];
+  }
+  return null;
+}
+
+function sQ0(q){document.getElementById('chatInp0').value=q;sMsg(0)}
+function sQ1(q){document.getElementById('chatInp1').value=q;sMsg(1)}
+
+function askComp(q){
+  switchTab('companion');
+  setTimeout(function(){document.getElementById('chatInp'+curPt).value=q;sMsg(curPt);},180);
+}
+
+function addMsg(text,role,pt){
+  var area=document.getElementById('chatArea'+pt);
+  var div=document.createElement('div');
+  div.className='msg '+role;
+  var t=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  div.innerHTML='<div class="msg-bubble">'+text+'</div><div class="msg-t">'+t+'</div>'+(role==='comp'?'<div class="msg-ai">✨ AI guide · Always confirm with your doctor</div>':'');
+  area.appendChild(div);
+  area.scrollTop=area.scrollHeight;
+  return div;
+}
+
+function addTyping(pt){
+  var area=document.getElementById('chatArea'+pt);
+  var div=document.createElement('div');
+  div.className='msg comp';
+  div.innerHTML='<div class="typing-ind"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  area.appendChild(div);
+  area.scrollTop=area.scrollHeight;
+  return div;
+}
+
+// ── Voice synthesis ──
+function tSpk(pt){
+  voiceOn[pt]=!voiceOn[pt];
+  var btn=document.getElementById('spkBtn'+pt);
+  btn.classList.toggle('active',voiceOn[pt]);
+  btn.textContent=voiceOn[pt]?'🔊':'🔇';
+  if(!voiceOn[pt]&&window.speechSynthesis) window.speechSynthesis.cancel();
+}
+function speak(text,pt){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var clean=text.replace(/[*_~`]/g,'');
+  var utt=new SpeechSynthesisUtterance(clean);
+  utt.lang=pt===1?'pt-PT':'en-GB';
+  utt.rate=0.92;utt.pitch=1;
+  var voices=window.speechSynthesis.getVoices();
+  var pref=voices.find(function(v){return v.lang.startsWith(pt===1?'pt':'en')&&v.name.toLowerCase().includes('female')})||voices.find(function(v){return v.lang.startsWith(pt===1?'pt':'en')});
+  if(pref) utt.voice=pref;
+  utt.onstart=function(){setVoiceStatus(pt,'speaking');document.getElementById('compStat'+pt).className='comp-status speaking'};
+  utt.onend=utt.onerror=function(){setVoiceStatus(pt,'ready');document.getElementById('compStat'+pt).className='comp-status'};
+  window.speechSynthesis.speak(utt);
+}
+
+// ── Voice recognition ──
+function tMic(pt){
+  if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert('Voice input needs Chrome or Safari.');return;}
+  micOn[pt]?stopMic(pt):startMic(pt);
+}
+function startMic(pt){
+  micOn[pt]=true;
+  document.getElementById('micBtn'+pt).classList.add('active');
+  setVoiceStatus(pt,'listening');
+  document.getElementById('compStat'+pt).className='comp-status listening';
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var rec=new SR();
+  recognizers[pt]=rec;
+  rec.lang=pt===1?'pt-PT':'en-GB';
+  rec.continuous=false;rec.interimResults=true;
+  rec.onresult=function(e){
+    var t='';
+    for(var i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript;
+    document.getElementById('chatInp'+pt).value=t;
+    if(e.results[e.results.length-1].isFinal){stopMic(pt);setTimeout(function(){sMsg(pt);},200);}
+  };
+  rec.onerror=function(){stopMic(pt)};
+  rec.onend=function(){if(micOn[pt])stopMic(pt)};
+  rec.start();
+}
+function stopMic(pt){
+  micOn[pt]=false;
+  document.getElementById('micBtn'+pt).classList.remove('active');
+  setVoiceStatus(pt,'ready');
+  document.getElementById('compStat'+pt).className='comp-status';
+  if(recognizers[pt]){try{recognizers[pt].stop();}catch(e){}recognizers[pt]=null;}
+}
+function setVoiceStatus(pt,state){
+  var vs=document.getElementById('voiceStatus'+pt);
+  var lbl=document.getElementById('voiceLabel'+pt);
+  vs.className='voice-status '+(state!=='ready'?state:'');
+  var labels=pt===1?{ready:'Pronto',listening:'A ouvir…',speaking:'A falar…'}:{ready:'Ready',listening:'Listening…',speaking:'Speaking…'};
+  lbl.textContent=labels[state]||labels.ready;
+}
+
+// ── Tracking helpers ──
+function selectScore(btn,type){
+  document.querySelectorAll('.score-btn').forEach(function(b){
+    b.style.border=b.dataset.val<=2?'1.5px solid var(--sage-br)':b.dataset.val<=5?'1.5px solid var(--amb-br)':'1.5px solid var(--rose-br)';
+    b.style.background=b.dataset.val<=2?'var(--sage-bg)':b.dataset.val<=5?'var(--amb-bg)':'var(--rose-bg)';
+    b.style.color=b.dataset.val<=2?'var(--sage)':b.dataset.val<=5?'var(--amber)':'var(--rose)';
+    b.style.fontWeight='600';
+  });
+  btn.style.border='2px solid var(--amber)';btn.style.background='var(--amber)';btn.style.color='#fff';btn.style.fontWeight='700';
+}
+function woundSelect(btn,val){
+  document.querySelectorAll('.wound-btn').forEach(function(b){b.style.fontWeight='500'});
+  btn.style.fontWeight='700';
+  if(val==='preocupante') setTimeout(function(){alert('⚠️ Registo urgente enviado para o Dr. Mota. Se tiver febre ou vermelhidão a alastrar, contacte o hospital.');},100);
+}
+function submitCheckin(){alert('✅ Registo guardado! O Dr. Mota verá estes dados antes da sua consulta de 18 de Abril.');}
+
+// ── Init ──
+if(window.speechSynthesis){
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices()};
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var trackBtn=document.getElementById('st-tracking');
+  if(trackBtn) trackBtn.style.display='none';
+  switchTab('journey');
+});
+
+</script>
+</body>
+</html>
